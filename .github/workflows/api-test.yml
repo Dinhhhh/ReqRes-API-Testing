@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   api-test:
@@ -17,14 +18,26 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: Install Newman and HTML Extra Reporter
         run: npm install -g newman newman-reporter-htmlextra
+
       - name: Run API Data-Driven Tests
+        env:
+          API_KEY: ${{ secrets.REQRES_API_KEY }}
         run: |
           newman run .github/workflows/ReqRes_Collection.json \
             -e .github/workflows/ReqRes_Environment.json \
-            --env-var "api-key=${{ secrets.REQRES_API_KEY }}" \
+            --env-var "baseUrl=https://reqres.in" \
+            --env-var "api-key=$API_KEY" \
             --reporters cli,htmlextra \
             --reporter-htmlextra-export newman-report.html
+
+      - name: Upload HTML Test Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: API-Test-Report
+          path: newman-report.html
+          if-no-files-found: ignore
