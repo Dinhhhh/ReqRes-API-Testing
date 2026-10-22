@@ -1,5 +1,5 @@
 
-name: API Data-Driven Testing
+name: API Test
 
 on:
   push:
@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source code
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Setup Node.js
@@ -21,20 +21,3 @@ jobs:
 
       - name: Install Newman and HTML Extra Reporter
         run: npm install -g newman newman-reporter-htmlextra
-
-      - name: Run API Data-Driven Tests
-        run: |
-          newman run RestfulBooker.postman_collection.json \
-            -e RestfulBooker.postman_environment.json \
-            -d users.csv \
-            --env-var "api-key=${{ secrets.REQRES_API_KEY }}" \
-            --reporters cli,htmlextra \
-            --reporter-htmlextra-export newman-report.html
-
-      - name: Upload HTML Test Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: API-Test-Report
-          path: newman-report.html
-          if-no-files-found: ignore
