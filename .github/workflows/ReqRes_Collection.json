@@ -95,12 +95,6 @@
               "raw": "{{baseUrl}}/api/users/{{userId}}",
               "host": [
                 "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "users",
-                "{{userId}}"
-              ]
             },
             "description": "StartFragmentDo ReqRes là sandbox giả lập tĩnh nên các user tạo mới qua  \nPOST không được lưu thật vào DB cứng; sinh viên truy vấn user chuẩn có sẵn id =  \n2 để kiểm tra cấu trúc dữ liệu trả về.EndFragment"
           },
