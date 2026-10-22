@@ -21,3 +21,10 @@ jobs:
 
       - name: Install Newman and HTML Extra Reporter
         run: npm install -g newman newman-reporter-htmlextra
+      - name: Run API Data-Driven Tests
+        run: |
+          newman run .github/workflows/ReqRes_Collection.json \
+            -e .github/workflows/ReqRes_Environment.json \
+            --env-var "api-key=${{ secrets.REQRES_API_KEY }}" \
+            --reporters cli,htmlextra \
+            --reporter-htmlextra-export newman-report.html
